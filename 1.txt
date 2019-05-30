@@ -1,0 +1,3 @@
+robocopy "D:\用户目录" "I:\Users" /E /COPYALL /XJ
+　　rmdir "D:\用户目录" /S /Q
+　　mklink /J "D:\用户目录" "I:\Users"
