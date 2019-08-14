@@ -7,6 +7,7 @@ except IOError as err:
     print(str(err))
 print (arr)
 
+# index will throw exception if there's no match
 inputStr = input()
 tmpStr = inputStr;
 for s in arr:
