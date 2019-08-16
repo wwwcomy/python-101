@@ -20,4 +20,4 @@ for row in dict:
     ws.append(row)
 
 # Save the file
-wb.save("D16-numbers.xlsx")
+wb.save("numbers.xlsx")

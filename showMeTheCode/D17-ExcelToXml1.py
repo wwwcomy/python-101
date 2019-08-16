@@ -1,6 +1,7 @@
 from openpyxl import load_workbook
 import xml.etree.ElementTree as ET
 
+#student.xlsx is the out put of D14
 wb = load_workbook(filename = 'student.xlsx')
 sheet_ranges = wb['Sheet']
 print(sheet_ranges['A1'].value)
@@ -22,4 +23,4 @@ students.insert(0,ET.Comment('''
 	"id" : [名字, 数学, 语文, 英文]'''))
 students.text = str(dict)
 tree = ET.ElementTree(root)
-tree.write("filename.xml",encoding='UTF8')
+tree.write("students.xml",encoding='UTF8')
