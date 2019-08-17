@@ -4,17 +4,10 @@ from hmac import HMAC
 import hashlib
 import base64
 
-#handle encode/decode encrypt/dycrypt hash,saltedHash
-def hashWithSalt(password, salt=None):
-    if salt is None:
-        salt = os.urandom(8) # 64 bits.
-    assert isinstance(password, str)
-    result = HMAC(password, salt, sha256).digest()
-    return salt + result
-
 def hashSha256(password, salt=None):
     if salt is None:
         salt = os.urandom(8) # 64 bits.
+    print(salt)
     hash_object = hashlib.sha256(password + salt)
     hex_dig = hash_object.hexdigest()
     return hex_dig+":"+salt
@@ -28,6 +21,7 @@ password = 'password123'
 print(base64.b64encode(password.encode()).decode('utf-8'))
 print(base64.b64decode('cGFzc3dvcmQxMjM=').decode('UTF8'))
 print(hashSha256WithNoSalt(password.encode()))
+print(hashSha256(password.encode()))
 
 
 #print(base64.decode(password))
