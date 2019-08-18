@@ -4,7 +4,10 @@ from hmac import HMAC
 import hashlib
 import base64
 import binascii
+from Crypto.Cipher import AES
 
+
+# pip install pycryptodome
 
 # use sha256 to hash the password with a salt, then return with the result with :base64Salt
 def hashSha256(password, salt=None):
@@ -60,13 +63,56 @@ def createSalt(salt=None):
     print(unhexlifiedSalt)
 
 
+def encrypt(input):
+    key = b'Thesafestkey....'
+    # looks like only ECB mode works
+    # TODO spend some time on checking the difference of the mode
+    cipher = AES.new(key, AES.MODE_ECB)
+    input = add_to_16(input)
+    print(input)
+    # ciphertext, tag = cipher.encrypt_and_digest(input.encode())
+    encResult = cipher.encrypt(input)
+    print("encResult as bytes:")
+    print(encResult)
+    return binascii.hexlify(encResult)
+    #return base64.b64encode(encResult).decode('utf-8')
+
+def add_to_16(s):
+    while len(s) % 16 != 0:
+        s += '\0'
+    return str.encode(s)
+    #return s.encode()
+
+
+def dycrypt(input):
+    key = b'Thesafestkey....'
+    cipher = AES.new(key, AES.MODE_ECB)
+    # print(unhexlify)
+    print(input)
+    #tmp =  base64.b64decode(input)
+    tmp = binascii.unhexlify(input)
+    print(tmp)
+    decrypted_text = cipher.decrypt(tmp).rstrip(b'\0')
+    return decrypted_text.decode()
+
+
+print('******* This is for Create Salt *********')
 createSalt()
 password = 'password123'
+
+print('******* This is for Base64 *********')
 print(base64.b64encode(password.encode()).decode('utf-8'))
 print(base64.b64decode('cGFzc3dvcmQxMjM=').decode('UTF8'))
+
+print('******* This is for Hash *********')
 print(hashSha256WithNoSalt(password.encode()))
 hashedResult = hashSha256(password.encode())
-print(hashedResult)
+print('Hash with salt:' + hashedResult)
 salt = hashedResult.split(':')[1]
-print(salt)
+print('Salt is:' + salt)
 print(checkHash(password.encode(), salt, hashedResult.split(':')[0]))
+
+print('******* This is for AES *********')
+encVal = encrypt(password)
+print('enc result:' + encVal.decode())
+print(dycrypt(encVal))
