@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 import os
 import sys
 import binascii
+import requests
 
 def createSalt(salt=None):
     if salt is None:
@@ -24,5 +25,13 @@ def createSalt(salt=None):
     unhexlifiedSalt = binascii.unhexlify(hexlifiedSalt)
     print (unhexlifiedSalt)
 
+def testRequests():
+    response = requests.post(
+        'http://localhost:8888/test/testPost',
+        json={
+            "value": "input"
+        }
+    )
+    print(response.json())
 
 createSalt("123")
